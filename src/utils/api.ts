@@ -1,5 +1,28 @@
 const BASE = 'https://discord.com/api/v10';
 
+export const PERMISSION: Record<string, bigint> = {
+  view_channel: 1n << 10n,
+  send_messages: 1n << 11n,
+  send_messages_in_threads: 1n << 38n,
+  create_public_threads: 1n << 35n,
+  create_private_threads: 1n << 36n,
+  embed_links: 1n << 14n,
+  attach_files: 1n << 15n,
+  add_reactions: 1n << 6n,
+  use_external_emojis: 1n << 18n,
+  read_message_history: 1n << 16n,
+  mention_everyone: 1n << 17n,
+  manage_messages: 1n << 13n,
+  manage_channels: 1n << 4n,
+  manage_roles: 1n << 28n,
+  connect: 1n << 20n,
+  speak: 1n << 21n,
+  mute_members: 1n << 22n,
+  deafen_members: 1n << 23n,
+  move_members: 1n << 24n,
+  use_voice_activity: 1n << 25n,
+};
+
 export const CHANNEL_TYPE: Record<string, number> = {
   text: 0,
   voice: 2,
@@ -88,6 +111,22 @@ export class DiscordAPI {
     return (await this.request('PATCH', `/channels/${channelId}`, data)) as Channel;
   }
 
+  async getChannel(channelId: string): Promise<Channel> {
+    return (await this.request('GET', `/channels/${channelId}`)) as Channel;
+  }
+
+  async editChannelPermission(
+    channelId: string,
+    overwriteId: string,
+    data: { allow: string; deny: string; type: number }
+  ): Promise<void> {
+    await this.request('PUT', `/channels/${channelId}/permissions/${overwriteId}`, data);
+  }
+
+  async deleteChannelPermission(channelId: string, overwriteId: string): Promise<void> {
+    await this.request('DELETE', `/channels/${channelId}/permissions/${overwriteId}`);
+  }
+
   // ── Roles ──
 
   async listRoles(guildId: string): Promise<Role[]> {
@@ -151,6 +190,13 @@ export interface GuildFull extends Guild {
   premium_subscription_count: number;
 }
 
+export interface PermissionOverwrite {
+  id: string;
+  type: number; // 0 = role, 1 = member
+  allow: string;
+  deny: string;
+}
+
 export interface Channel {
   id: string;
   name: string;
@@ -158,6 +204,7 @@ export interface Channel {
   position: number;
   parent_id: string | null;
   topic?: string | null;
+  permission_overwrites?: PermissionOverwrite[];
 }
 
 export interface Role {

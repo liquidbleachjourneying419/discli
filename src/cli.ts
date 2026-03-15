@@ -4,6 +4,7 @@ import { registerServer } from './commands/server.js';
 import { registerChannel } from './commands/channel.js';
 import { registerRole } from './commands/role.js';
 import { registerMember } from './commands/member.js';
+import { registerPermission } from './commands/permission.js';
 
 const program = new Command();
 
@@ -19,5 +20,6 @@ registerServer(program);
 registerChannel(program);
 registerRole(program);
 registerMember(program);
+registerPermission(program);
 
 program.parse();
