@@ -132,6 +132,31 @@ Returns array of message objects.
 
 Returns a channel object (thread type).
 
+## audit log
+
+Returns array of audit log entries:
+
+```json
+[
+  {
+    "id": "string",
+    "user_id": "string|null",
+    "target_id": "string|null",
+    "action_type": "number",
+    "reason": "string|null",
+    "changes": [{ "key": "string", "old_value": "any", "new_value": "any" }]
+  }
+]
+```
+
+## audit types
+
+```json
+[
+  { "name": "string", "value": "number" }
+]
+```
+
 ## Exit Codes
 
 | Code | Meaning |

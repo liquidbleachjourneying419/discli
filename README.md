@@ -137,6 +137,16 @@ discli msg thread <channel> "Thread Name"              # Create thread
 discli msg thread <channel> "Name" --message <msg-id>  # Thread from message
 ```
 
+### Audit Log
+
+```bash
+discli audit log                         # View recent audit log
+discli audit log -n 50                   # Last 50 entries
+discli audit log --type member_kick      # Filter by action type
+discli audit log --user <id>             # Filter by who did it
+discli audit types                       # List all action type names
+```
+
 <br>
 
 ## For AI Agents

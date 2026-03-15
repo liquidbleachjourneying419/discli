@@ -67,6 +67,12 @@ discli msg unpin <ch> <id>            # Unpin message
 discli msg pins <channel>             # List pinned messages
 discli msg thread <ch> "Name"         # Create thread
 discli msg thread <ch> "Name" --message <id>  # Thread from message
+
+discli audit log                         # View recent audit log
+discli audit log -n 50                   # Last 50 entries
+discli audit log --type member_kick      # Filter by action type
+discli audit log --user <id>             # Filter by who performed action
+discli audit types                       # List action type names
 ```
 
 ## Global Flags

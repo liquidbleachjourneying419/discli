@@ -90,6 +90,21 @@ export class DiscordAPI {
     return (await this.request('GET', `/guilds/${guildId}?with_counts=true`)) as GuildFull;
   }
 
+  // ── Audit Log ──
+
+  async getAuditLog(
+    guildId: string,
+    opts?: { user_id?: string; action_type?: number; limit?: number; before?: string }
+  ): Promise<AuditLog> {
+    const params = new URLSearchParams();
+    if (opts?.user_id) params.set('user_id', opts.user_id);
+    if (opts?.action_type !== undefined) params.set('action_type', String(opts.action_type));
+    if (opts?.limit) params.set('limit', String(Math.min(opts.limit, 100)));
+    if (opts?.before) params.set('before', opts.before);
+    const qs = params.toString();
+    return (await this.request('GET', `/guilds/${guildId}/audit-logs${qs ? '?' + qs : ''}`)) as AuditLog;
+  }
+
   // ── Channels ──
 
   async listChannels(guildId: string): Promise<Channel[]> {
@@ -330,3 +345,59 @@ export interface Message {
   };
   embeds?: Embed[];
 }
+
+export interface AuditLogEntry {
+  id: string;
+  user_id: string | null;
+  target_id: string | null;
+  action_type: number;
+  reason?: string;
+  changes?: { key: string; old_value?: unknown; new_value?: unknown }[];
+}
+
+export interface AuditLog {
+  audit_log_entries: AuditLogEntry[];
+  users: { id: string; username: string }[];
+}
+
+export const AUDIT_ACTION: Record<string, number> = {
+  guild_update: 1,
+  channel_create: 10,
+  channel_update: 11,
+  channel_delete: 12,
+  member_kick: 20,
+  member_prune: 21,
+  member_ban_add: 22,
+  member_ban_remove: 23,
+  member_update: 24,
+  member_role_update: 25,
+  bot_add: 28,
+  role_create: 30,
+  role_update: 31,
+  role_delete: 32,
+  invite_create: 40,
+  invite_delete: 42,
+  webhook_create: 50,
+  webhook_update: 51,
+  webhook_delete: 52,
+  emoji_create: 60,
+  emoji_delete: 62,
+  message_delete: 72,
+  message_bulk_delete: 73,
+  message_pin: 74,
+  message_unpin: 75,
+  thread_create: 110,
+  thread_update: 111,
+  thread_delete: 112,
+  automod_rule_create: 140,
+  automod_rule_update: 141,
+  automod_rule_delete: 142,
+  automod_block_message: 143,
+  integration_create: 80,
+  integration_update: 81,
+  integration_delete: 82,
+};
+
+export const AUDIT_ACTION_NAME: Record<number, string> = Object.fromEntries(
+  Object.entries(AUDIT_ACTION).map(([k, v]) => [v, k])
+);
