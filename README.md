@@ -1,22 +1,26 @@
 <p align="center">
-  <img src="assets/banner.png" alt="discli — Discord Server Management CLI" width="100%">
+  <img src="assets/banner.png" alt="discli - Discord Server Management CLI" width="100%">
 </p>
 
 <p align="center">
-  <strong>Discord server management CLI — built for AI agents and humans.</strong>
+  <strong>Discord server management CLI for AI agents and humans.</strong>
 </p>
 
-Create channels, manage roles, set permissions, and control your Discord servers entirely from the terminal. No bot server needed. No dashboard clicking. Just commands.
+<br>
 
-> Your AI agent (Claude Code, Cursor, Windsurf, Codex) can use discli to manage your Discord server — create channels, assign roles, rename everything — in seconds, not minutes.
+Create channels, manage roles, set permissions, and control your Discord servers from the terminal.
 
----
+No bot server needed. No dashboard clicking. Just commands.
+
+> Your AI agent (Claude Code, Cursor, Windsurf, Codex) can use discli to manage your Discord server. Create channels, assign roles, rename everything, in seconds.
+
+<br>
 
 ## Why discli?
 
 Setting up a Discord server manually is slow. Using bots for management is limited. MCP tools eat your token budget.
 
-discli gives you (and your AI agent) direct control over Discord through simple CLI commands:
+discli gives you direct control over Discord through simple CLI commands:
 
 ```bash
 discli channel create "💬・general" --category "Community"
@@ -25,9 +29,9 @@ discli perm lock "📜・rules"
 discli channel rename "old-name" "🎯・new-name"
 ```
 
-**One command = one API call. No bot server running. No token overhead. No UI clicking.**
+One command = one API call. No bot server. No token overhead.
 
----
+<br>
 
 ## Quick Start
 
@@ -44,18 +48,20 @@ discli server info
 ```
 
 <details>
-<summary><strong>Getting a bot token</strong></summary>
+<summary><strong>How to get a bot token</strong></summary>
+
+<br>
 
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Create a new application
-3. Go to **Bot** → **Reset Token** → copy it
-4. Go to **Installation** → set **Guild Install** scopes: `bot`, `applications.commands` with **Administrator** permission
+3. Go to **Bot** > **Reset Token** > copy it
+4. Go to **Installation** > set **Guild Install** scopes: `bot`, `applications.commands` with **Administrator** permission
 5. Use the install link to add the bot to your server
 6. Run `discli init --token YOUR_TOKEN`
 
 </details>
 
----
+<br>
 
 ## Commands
 
@@ -64,7 +70,7 @@ discli server info
 ```bash
 discli server list              # List servers the bot is in
 discli server select <id>       # Set default server
-discli server info              # Server overview (members, boosts, etc.)
+discli server info              # Server overview
 ```
 
 ### Channels
@@ -73,11 +79,11 @@ discli server info              # Server overview (members, boosts, etc.)
 discli channel list                          # List all channels by category
 discli channel create <name>                 # Create text channel
 discli channel create <name> --type voice    # Create voice channel
-discli channel create <name> --category Dev  # Create under category
+discli channel create <name> --category Dev  # Create under a category
 discli channel create "Dev" --type category  # Create a category
 discli channel rename <channel> <new-name>   # Rename channel
 discli channel topic <channel> "topic text"  # Set channel topic
-discli channel move <channel> --category X   # Move to category
+discli channel move <channel> --category X   # Move to a category
 discli channel delete <channel> --confirm    # Delete (requires --confirm)
 ```
 
@@ -95,46 +101,48 @@ discli role delete <name> --confirm         # Delete (requires --confirm)
 ### Members
 
 ```bash
-discli member list                # List members
-discli member info <user>         # Member details
-discli member nick <user> <nick>  # Change nickname
-discli member kick <user> --confirm --reason "spam"  # Kick
-discli member ban <user> --confirm                   # Ban
+discli member list                                  # List members
+discli member info <user>                           # Member details
+discli member nick <user> <nick>                    # Change nickname
+discli member kick <user> --confirm --reason "spam" # Kick
+discli member ban <user> --confirm                  # Ban
 ```
 
 ### Permissions
 
 ```bash
-discli perm view <channel>                           # View channel permissions
-discli perm lock <channel>                           # Make read-only
-discli perm unlock <channel>                         # Remove read-only
+discli perm view <channel>                             # View channel permissions
+discli perm lock <channel>                             # Make read-only
+discli perm unlock <channel>                           # Remove read-only
 discli perm set <channel> <role> --deny send_messages  # Fine-grained control
-discli perm list                                     # List permission names
+discli perm list                                       # List permission names
 ```
 
----
+<br>
 
 ## For AI Agents
 
-discli is designed to be used by AI coding agents like Claude Code, Cursor, Codex, and others.
+discli is designed for AI coding agents like Claude Code, Cursor, Codex, and others.
 
 ### How agents use it
 
-1. **Install the skill** — copy `skills/SKILL.md` to your agent's skill directory
-2. **Agent reads the skill** — learns all available commands
-3. **Agent runs commands** — manages your server through the terminal
+1. Install the skill: copy `skills/SKILL.md` to your agent's skill directory
+2. Agent reads the skill and learns all available commands
+3. Agent runs commands and manages your server through the terminal
 
 ### Agent-friendly features
 
-- **YAML by default when piped** — 5x fewer tokens than JSON, auto-detected
-- **`-n` flag** — limit results to save tokens
-- **`--dry-run`** — preview changes before applying
-- **`--confirm` required** — destructive commands never auto-execute
-- **Structured exit codes** — `0` success, `1` error, `2` usage, `3` not found, `4` forbidden
-- **SCHEMA.md** — documents output shapes for predictable parsing
-- **No MCP overhead** — zero token cost at session start, just run commands as needed
+| Feature | Details |
+|---------|---------|
+| YAML output by default | 5x fewer tokens than JSON when piped |
+| `-n` flag | Limit results to save tokens |
+| `--dry-run` | Preview changes before applying |
+| `--confirm` required | Destructive commands never auto-execute |
+| Structured exit codes | `0` success, `1` error, `2` usage, `3` not found, `4` forbidden |
+| SCHEMA.md | Documents output shapes for predictable parsing |
+| No MCP overhead | Zero token cost at session start |
 
-### Claude Code / Cursor setup
+### Setup for Claude Code / Cursor
 
 ```bash
 # Install discli globally
@@ -143,14 +151,14 @@ npm install -g discli
 # Copy the skill file
 cp node_modules/discli/skills/SKILL.md ~/.claude/skills/discli/SKILL.md
 
-# Done — your agent can now use discli
+# Done. Your agent can now use discli.
 ```
 
 ### Example: agent sets up an entire server
 
 ```
-You: "Set up my Discord like a dev community — channels for general chat,
-      code help, AI tools, and a read-only announcements channel"
+You: "Set up my Discord like a dev community with channels for
+      general chat, code help, AI tools, and read-only announcements"
 
 Agent runs:
   discli channel create "Community" --type category
@@ -161,19 +169,19 @@ Agent runs:
   discli perm lock "📢・announcements"
 ```
 
----
+<br>
 
 ## Global Flags
 
 | Flag | Description |
 |------|-------------|
-| `--format <yaml\|json\|table\|auto>` | Output format (default: auto — YAML when piped, table in terminal) |
-| `--server <id>` | Target a specific server |
+| `--format <yaml\|json\|table\|auto>` | Output format. Default: auto (YAML when piped, table in terminal) |
+| `--server <id>` | Target a specific server instead of default |
 | `-n <count>` | Limit results on list commands |
 | `--dry-run` | Preview changes without applying |
-| `--confirm` | Required for destructive actions |
+| `--confirm` | Required for destructive actions (delete, kick, ban) |
 
----
+<br>
 
 ## How It Works
 
@@ -189,13 +197,13 @@ Body: {"name": "test", "type": 0}
 Channel created. Done.
 ```
 
-No WebSocket connection. No bot process. No server hosting. Your bot can be offline — commands still work.
+No WebSocket connection. No bot process. No server hosting. Your bot can be offline and commands still work.
 
----
+<br>
 
 ## Bring Your Own Bot
 
-discli uses YOUR bot token. You create the bot, you control the permissions, you own the data. Nothing is sent to us.
+discli uses your bot token. You create the bot, you control the permissions, you own the data. Nothing is sent to us.
 
 ```
 ~/.discli/
@@ -203,23 +211,22 @@ discli uses YOUR bot token. You create the bot, you control the permissions, you
 └── .env           # your bot token (never leaves your machine)
 ```
 
----
+<br>
 
-## vs Other Tools
+## Comparison
 
 | | discli | Discord MCP | discord-cli | Manual UI |
 |---|---|---|---|---|
 | **Purpose** | Server management | Server management | Read-only (fetch/search) | Everything |
 | **Used by** | Agents + humans | Agents only | Agents + humans | Humans only |
-| **Token cost** | Zero upfront | 20-40k tokens on load | Zero upfront | N/A |
-| **Speed** | Instant | Instant | Instant | Slow (clicking) |
+| **Token cost** | Zero upfront | 20-40k on load | Zero upfront | N/A |
 | **Create channels** | ✅ | ✅ | ❌ | ✅ |
 | **Manage roles** | ✅ | ✅ | ❌ | ✅ |
 | **Set permissions** | ✅ | ✅ | ❌ | ✅ |
-| **Read messages** | ❌ (coming) | ✅ | ✅ | ✅ |
+| **Read messages** | Coming soon | ✅ | ✅ | ✅ |
 | **Self-hosted** | ✅ | ✅ | ✅ | N/A |
 
----
+<br>
 
 ## Roadmap
 
@@ -228,16 +235,16 @@ discli uses YOUR bot token. You create the bot, you control the permissions, you
 - [ ] Scheduled events
 - [ ] Automod rules
 - [ ] Server templates (export/import structure)
-- [ ] `discli setup` — interactive guided server setup
+- [ ] `discli setup` interactive guided server setup
 
----
+<br>
 
 ## License
 
 MIT
 
----
+<br>
 
 <p align="center">
-  Built by <a href="https://github.com/ibbybuilds">@ibbybuilds</a> — tired of clicking through Discord settings.
+  Built by <a href="https://github.com/ibbybuilds">@ibbybuilds</a>
 </p>
