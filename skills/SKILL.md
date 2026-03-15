@@ -12,12 +12,13 @@ Control Discord servers from the terminal. Works for both humans and AI agents.
 
 ## Agent Defaults
 
-- Output is auto-detected: JSON when piped (agent), table in terminal (human).
+- Output is auto-detected: YAML when piped (agent), table in terminal (human).
+- YAML is the preferred format for agents — 5x fewer tokens than JSON.
 - Use `-n` to limit results and keep token usage low.
-- Use `--format json` to force structured output.
+- Use `--format yaml` to force structured output, `--format json` if you need strict JSON.
 - Use `--dry-run` on create/rename/permission commands to preview changes.
 - Destructive commands (delete, kick, ban) require `--confirm` — they will NOT prompt.
-- See SCHEMA.md for exact JSON output shapes.
+- See SCHEMA.md for output shapes.
 
 ## Quick Reference
 
@@ -55,7 +56,7 @@ discli perm list                      # List available permission names
 
 ## Global Flags
 
-- `--format <json|table|auto>` — output format (default: auto)
+- `--format <yaml|json|table|auto>` — output format (default: auto = yaml when piped, table in terminal)
 - `--server <id>` — target a specific server instead of default
 - `-n <count>` — limit results on list commands
 

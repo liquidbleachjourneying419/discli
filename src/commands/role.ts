@@ -21,7 +21,7 @@ export function registerRole(program: Command): void {
 
       const sorted = roles.sort((a, b) => b.position - a.position).slice(0, opts.n ?? roles.length);
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(sorted, fmt);
         return;
       }
@@ -65,7 +65,7 @@ export function registerRole(program: Command): void {
       }
 
       const r = await api.createRole(guildId, data);
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(r, fmt);
       } else {
         console.log(`Created role @${r.name} — ${r.id}`);

@@ -126,12 +126,12 @@ discli is designed to be used by AI coding agents like Claude Code, Cursor, Code
 
 ### Agent-friendly features
 
-- **Auto-detect output format** — JSON when piped, table in terminal
+- **YAML by default when piped** — 5x fewer tokens than JSON, auto-detected
 - **`-n` flag** — limit results to save tokens
 - **`--dry-run`** — preview changes before applying
 - **`--confirm` required** — destructive commands never auto-execute
 - **Structured exit codes** — `0` success, `1` error, `2` usage, `3` not found, `4` forbidden
-- **SCHEMA.md** — documents exact JSON output shapes for predictable parsing
+- **SCHEMA.md** — documents output shapes for predictable parsing
 - **No MCP overhead** — zero token cost at session start, just run commands as needed
 
 ### Claude Code / Cursor setup
@@ -167,7 +167,7 @@ Agent runs:
 
 | Flag | Description |
 |------|-------------|
-| `--format <json\|table\|auto>` | Output format (default: auto — JSON when piped, table in terminal) |
+| `--format <yaml\|json\|table\|auto>` | Output format (default: auto — YAML when piped, table in terminal) |
 | `--server <id>` | Target a specific server |
 | `-n <count>` | Limit results on list commands |
 | `--dry-run` | Preview changes without applying |

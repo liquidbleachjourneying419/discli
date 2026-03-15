@@ -16,7 +16,7 @@ export function registerServer(program: Command): void {
       const api = new DiscordAPI(requireToken());
       const guilds = await api.listGuilds();
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(guilds, fmt);
         return;
       }
@@ -51,6 +51,11 @@ export function registerServer(program: Command): void {
       const guildId = requireServer(program.opts().server);
       const guild = await api.getGuild(guildId);
 
+      if (fmt !== 'table') {
+        printResult(guild, fmt);
+        return;
+      }
+
       const info = {
         name: guild.name,
         id: guild.id,
@@ -60,11 +65,6 @@ export function registerServer(program: Command): void {
         boosts: guild.premium_subscription_count,
         boost_tier: guild.premium_tier,
       };
-
-      if (fmt === 'json') {
-        printResult(guild, fmt);
-        return;
-      }
 
       console.log(`\n${guild.name}`);
       console.log('─'.repeat(guild.name.length));

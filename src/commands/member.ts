@@ -19,7 +19,7 @@ export function registerMember(program: Command): void {
       const guildId = requireServer(program.opts().server);
       const members = await api.listMembers(guildId, parseInt(opts.limit));
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(members, fmt);
         return;
       }
@@ -47,7 +47,7 @@ export function registerMember(program: Command): void {
       const guildId = requireServer(program.opts().server);
       const m = await resolveMember(api, guildId, userName);
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(m, fmt);
         return;
       }
@@ -123,7 +123,7 @@ export function registerMember(program: Command): void {
       const m = await resolveMember(api, guildId, userName);
 
       await api.modifyMember(guildId, m.user!.id, { nick: nickname });
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult({ action: 'nick', user: m.user!.username, nick: nickname }, fmt);
       } else {
         console.log(`Set nickname for ${m.user!.username} → ${nickname}`);

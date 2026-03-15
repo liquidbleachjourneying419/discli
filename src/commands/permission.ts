@@ -47,7 +47,7 @@ export function registerPermission(program: Command): void {
       const overwrites = full.permission_overwrites ?? [];
       const roles = await api.listRoles(guildId);
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(overwrites, fmt);
         return;
       }
@@ -116,7 +116,7 @@ export function registerPermission(program: Command): void {
         type: 0, // role
       });
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult({ channel: ch.name, role: role.name, allow: allow.toString(), deny: deny.toString() }, fmt);
       } else {
         console.log(`Set permissions on #${ch.name} for @${role.name}`);
@@ -173,7 +173,7 @@ export function registerPermission(program: Command): void {
     .description('List all available permission names')
     .action(() => {
       const fmt = resolveFormat(program.opts().format);
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         const perms = Object.entries(PERMISSION).map(([name, val]) => ({ name, bit: val.toString() }));
         printResult(perms, fmt);
       } else {

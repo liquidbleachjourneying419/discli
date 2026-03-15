@@ -20,7 +20,7 @@ export function registerChannel(program: Command): void {
       let channels = await api.listChannels(guildId);
       if (opts.n) channels = channels.slice(0, opts.n);
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(channels, fmt);
         return;
       }
@@ -94,7 +94,7 @@ export function registerChannel(program: Command): void {
         topic: opts.topic,
       });
 
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(ch, fmt);
       } else {
         console.log(`Created #${ch.name} (${CHANNEL_TYPE_NAME[ch.type] ?? '?'}) — ${ch.id}`);
@@ -153,7 +153,7 @@ export function registerChannel(program: Command): void {
       const ch = await resolveChannel(api, guildId, channelName);
 
       const updated = await api.modifyChannel(ch.id, { topic });
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(updated, fmt);
       } else {
         console.log(`Set topic for #${ch.name}: ${topic}`);
@@ -187,7 +187,7 @@ export function registerChannel(program: Command): void {
       }
 
       const updated = await api.modifyChannel(ch.id, update);
-      if (fmt === 'json') {
+      if (fmt !== 'table') {
         printResult(updated, fmt);
       } else {
         console.log(`Moved #${ch.name}${opts.category ? ` → ${opts.category}` : ''}${opts.position !== undefined ? ` (position ${opts.position})` : ''}`);
