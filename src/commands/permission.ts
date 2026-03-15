@@ -139,8 +139,7 @@ export function registerPermission(program: Command): void {
       // @everyone role ID = guild ID
       const deny = PERMISSION.send_messages
         | PERMISSION.send_messages_in_threads
-        | PERMISSION.create_public_threads
-        | PERMISSION.add_reactions;
+        | PERMISSION.create_public_threads;
 
       if (opts.dryRun) {
         printResult({ action: 'lock', channel: ch.name, deny_for: '@everyone' }, fmt);
