@@ -52,6 +52,21 @@ discli perm set <ch> <role>           # Set permissions (--allow, --deny)
 discli perm lock <channel>            # Make read-only for @everyone
 discli perm unlock <channel>          # Remove read-only
 discli perm list                      # List available permission names
+
+discli msg send <channel> "text"      # Send message
+discli msg send <ch> "text" --reply <id>  # Reply to message
+discli msg embed <ch> --title "X" --description "Y" --color "#hex"  # Rich embed
+discli msg embed <ch> --title "X" --field "Name|Value|inline"       # Embed with fields
+discli msg read <channel> -n 10       # Read last N messages
+discli msg edit <ch> <msg-id> "new"   # Edit bot message
+discli msg delete <ch> <id> --confirm # Delete message
+discli msg react <ch> <id> 👍         # Add reaction
+discli msg unreact <ch> <id> 👍       # Remove reaction
+discli msg pin <ch> <id>              # Pin message
+discli msg unpin <ch> <id>            # Unpin message
+discli msg pins <channel>             # List pinned messages
+discli msg thread <ch> "Name"         # Create thread
+discli msg thread <ch> "Name" --message <id>  # Thread from message
 ```
 
 ## Global Flags

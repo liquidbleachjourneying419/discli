@@ -22,6 +22,7 @@ src/
     role.ts            # discli role {list, create, delete, assign, remove}
     member.ts          # discli member {list, info, kick, ban, nick}
     permission.ts      # discli perm {view, set, lock, unlock, list}
+    message.ts         # discli msg {send, embed, read, edit, delete, react, unreact, pin, unpin, pins, thread}
   utils/
     api.ts             # DiscordAPI class, all REST calls, types
     config.ts          # Token + config management (~/.discli/)

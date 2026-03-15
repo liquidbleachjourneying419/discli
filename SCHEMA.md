@@ -99,6 +99,39 @@ No output (exit code 0 = success).
 ]
 ```
 
+## message send / embed / edit
+
+Returns a message object:
+
+```json
+{
+  "id": "string",
+  "channel_id": "string",
+  "content": "string",
+  "timestamp": "string (ISO 8601)",
+  "edited_timestamp": "string|null",
+  "pinned": "boolean",
+  "author": { "id": "string", "username": "string", "bot": "boolean" },
+  "embeds": [{ "title": "string", "description": "string", "color": "number", "fields": [...] }]
+}
+```
+
+## message read
+
+Returns array of message objects (same shape as above).
+
+## message delete / react / unreact / pin / unpin
+
+No output (exit code 0 = success).
+
+## message pins
+
+Returns array of message objects.
+
+## message thread
+
+Returns a channel object (thread type).
+
 ## Exit Codes
 
 | Code | Meaning |

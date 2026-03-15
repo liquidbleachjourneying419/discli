@@ -118,6 +118,25 @@ discli perm set <channel> <role> --deny send_messages  # Fine-grained control
 discli perm list                                       # List permission names
 ```
 
+### Messages
+
+```bash
+discli msg send <channel> "Hello world"                # Send message
+discli msg send <channel> "reply" --reply <msg-id>     # Reply to message
+discli msg embed <channel> --title "X" --description "Y" --color "#5865F2"  # Rich embed
+discli msg embed <channel> --title "X" --field "Name|Value|inline"          # Embed with fields
+discli msg read <channel> -n 10                        # Read last N messages
+discli msg edit <channel> <msg-id> "new text"          # Edit bot message
+discli msg delete <channel> <msg-id> --confirm         # Delete message
+discli msg react <channel> <msg-id> 👍                  # Add reaction
+discli msg unreact <channel> <msg-id> 👍                # Remove reaction
+discli msg pin <channel> <msg-id>                      # Pin message
+discli msg unpin <channel> <msg-id>                    # Unpin message
+discli msg pins <channel>                              # List pinned messages
+discli msg thread <channel> "Thread Name"              # Create thread
+discli msg thread <channel> "Name" --message <msg-id>  # Thread from message
+```
+
 <br>
 
 ## For AI Agents
@@ -223,7 +242,8 @@ discli uses your bot token. You create the bot, you control the permissions, you
 | **Create channels** | ✅ | ✅ | ❌ | ✅ |
 | **Manage roles** | ✅ | ✅ | ❌ | ✅ |
 | **Set permissions** | ✅ | ✅ | ❌ | ✅ |
-| **Read messages** | Coming soon | ✅ | ✅ | ✅ |
+| **Read messages** | ✅ | ✅ | ✅ | ✅ |
+| **Send embeds** | ✅ | ✅ | ❌ | ✅ |
 | **Self-hosted** | ✅ | ✅ | ✅ | N/A |
 
 <br>
