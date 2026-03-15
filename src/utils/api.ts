@@ -103,6 +103,12 @@ export class DiscordAPI {
     return (await this.request('POST', `/guilds/${guildId}/channels`, opts)) as Channel;
   }
 
+  // ── Messages ──
+
+  async sendMessage(channelId: string, content: string): Promise<unknown> {
+    return await this.request('POST', `/channels/${channelId}/messages`, { content });
+  }
+
   async deleteChannel(channelId: string): Promise<void> {
     await this.request('DELETE', `/channels/${channelId}`);
   }

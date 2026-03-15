@@ -5,6 +5,7 @@ import { registerChannel } from './commands/channel.js';
 import { registerRole } from './commands/role.js';
 import { registerMember } from './commands/member.js';
 import { registerPermission } from './commands/permission.js';
+import { registerMessage } from './commands/message.js';
 
 const program = new Command();
 
@@ -21,5 +22,6 @@ registerChannel(program);
 registerRole(program);
 registerMember(program);
 registerPermission(program);
+registerMessage(program);
 
 program.parse();
