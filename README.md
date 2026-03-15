@@ -62,6 +62,8 @@ discli server info
 5. Use the install link to add the bot to your server
 6. Run `discli init --token YOUR_TOKEN`
 
+> 💡 **Permissions tip:** Administrator gives discli full access, but you don't have to. You can select only the permissions you need (Manage Channels, Manage Roles, etc.). Some features won't work without specific permissions, but you stay in control of what the bot can do.
+
 </details>
 
 <br>
@@ -69,8 +71,6 @@ discli server info
 ## ⚠️ Safety
 
 **When using with AI agents:** Always review commands before approving. Destructive commands like `channel delete`, `member kick`, and `member ban` require `--confirm` but your agent may add that flag automatically. Make sure your agent setup asks for your approval before running destructive actions.
-
-**Bot permissions:** discli works best with Administrator permission, but you don't have to give it full access. When adding the bot to your server, you can uncheck Administrator and select only the permissions you need (Manage Channels, Manage Roles, etc.). Some features won't work without specific permissions, but you stay in control of what the bot can do.
 
 <br>
 
