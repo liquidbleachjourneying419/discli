@@ -1,0 +1,122 @@
+import { Command } from 'commander';
+import { DiscordAPI } from '../utils/api.js';
+import { requireToken, requireServer } from '../utils/config.js';
+import { printResult } from '../utils/output.js';
+import { resolveRole, resolveMember } from '../utils/resolve.js';
+
+export function registerRole(program: Command): void {
+  const role = program
+    .command('role')
+    .description('Manage server roles');
+
+  role
+    .command('list')
+    .description('List all roles')
+    .action(async () => {
+      const fmt = program.opts().format;
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const roles = await api.listRoles(guildId);
+
+      if (fmt === 'json') {
+        printResult(roles, fmt);
+        return;
+      }
+
+      const rows = roles
+        .sort((a, b) => b.position - a.position)
+        .map((r) => ({
+          name: r.name,
+          id: r.id,
+          color: r.color ? `#${r.color.toString(16).padStart(6, '0')}` : '(none)',
+          managed: r.managed ? 'bot' : '',
+          position: r.position,
+        }));
+
+      console.log('\nRoles');
+      console.log('─────');
+      printResult(rows, fmt);
+    });
+
+  role
+    .command('create')
+    .description('Create a new role')
+    .argument('<name>', 'Role name')
+    .option('--color <hex>', 'Color hex (e.g. #ff5733)')
+    .option('--mentionable', 'Allow anyone to mention this role')
+    .option('--dry-run', 'Show what would be created')
+    .action(async (name: string, opts) => {
+      const fmt = program.opts().format;
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+
+      const data: Record<string, unknown> = { name };
+      if (opts.color) {
+        data.color = parseInt(opts.color.replace('#', ''), 16);
+      }
+      if (opts.mentionable) {
+        data.mentionable = true;
+      }
+
+      if (opts.dryRun) {
+        printResult({ action: 'create_role', ...data }, fmt);
+        return;
+      }
+
+      const r = await api.createRole(guildId, data);
+      if (fmt === 'json') {
+        printResult(r, fmt);
+      } else {
+        console.log(`Created role @${r.name} — ${r.id}`);
+      }
+    });
+
+  role
+    .command('delete')
+    .description('Delete a role')
+    .argument('<name>', 'Role name or ID')
+    .option('--confirm', 'Required to actually delete')
+    .action(async (name: string, opts) => {
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const r = await resolveRole(api, guildId, name);
+
+      if (!opts.confirm) {
+        console.error(`This will delete @${r.name} (${r.id}). Add --confirm to proceed.`);
+        process.exit(2);
+      }
+
+      await api.deleteRole(guildId, r.id);
+      console.log(`Deleted role @${r.name}`);
+    });
+
+  role
+    .command('assign')
+    .description('Assign a role to a member')
+    .argument('<role>', 'Role name or ID')
+    .argument('<user>', 'Username or ID')
+    .action(async (roleName: string, userName: string) => {
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const r = await resolveRole(api, guildId, roleName);
+      const m = await resolveMember(api, guildId, userName);
+
+      await api.addRoleToMember(guildId, m.user!.id, r.id);
+      console.log(`Assigned @${r.name} to ${m.user!.username}`);
+    });
+
+  role
+    .command('remove')
+    .description('Remove a role from a member')
+    .argument('<role>', 'Role name or ID')
+    .argument('<user>', 'Username or ID')
+    .action(async (roleName: string, userName: string) => {
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const r = await resolveRole(api, guildId, roleName);
+      const m = await resolveMember(api, guildId, userName);
+
+      await api.removeRoleFromMember(guildId, m.user!.id, r.id);
+      console.log(`Removed @${r.name} from ${m.user!.username}`);
+    });
+}

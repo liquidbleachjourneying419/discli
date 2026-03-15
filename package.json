@@ -1,0 +1,45 @@
+{
+  "name": "dctl",
+  "version": "0.1.0",
+  "description": "Discord server management CLI — control your servers from the terminal. Built for humans and AI agents.",
+  "type": "module",
+  "bin": {
+    "dctl": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibbybuilds/dctl"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "discord",
+    "cli",
+    "server",
+    "management",
+    "bot",
+    "agent"
+  ],
+  "author": "ibbybuilds",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^13.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}
