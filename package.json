@@ -21,9 +21,9 @@
     "start": "node dist/cli.js",
     "typecheck": "tsc --noEmit",
     "test": "node --test test/*.test.js",
-    "release:patch": "npm run typecheck && npm run build && npm version patch && npm publish --access=public && git push && git push --tags",
-    "release:minor": "npm run typecheck && npm run build && npm version minor && npm publish --access=public && git push && git push --tags",
-    "release:major": "npm run typecheck && npm run build && npm version major && npm publish --access=public && git push && git push --tags"
+    "release:patch": "npm run typecheck && npm run build && npm test && npm version patch && git push && git push --tags",
+    "release:minor": "npm run typecheck && npm run build && npm test && npm version minor && git push && git push --tags",
+    "release:major": "npm run typecheck && npm run build && npm test && npm version major && git push && git push --tags"
   },
   "keywords": [
     "discord",
