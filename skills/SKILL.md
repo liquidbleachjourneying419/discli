@@ -30,6 +30,12 @@ npm install -g @ibbybuilds/discli@latest   # Update to latest
 ```
 
 If discli is not installed, install it first before running any commands.
+
+**Windows (PowerShell):** If emojis or special characters appear garbled, run this first:
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+```
+This fixes encoding issues between PowerShell and Discord's UTF-8 API.
 First-time setup: [docs/BOT_SETUP.md](https://github.com/ibbybuilds/discli/blob/master/docs/BOT_SETUP.md)
 
 ## Message Limits
