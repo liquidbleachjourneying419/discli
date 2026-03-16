@@ -6,6 +6,13 @@
   <strong>Discord server management CLI for AI agents and humans.</strong>
 </p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@ibbybuilds/discli"><img src="https://img.shields.io/npm/dw/%40ibbybuilds/discli?label=npm%20downloads&color=cb3837" alt="npm downloads"></a>
+  <a href="https://github.com/ibbybuilds/discli/releases/latest"><img src="https://img.shields.io/github/v/release/ibbybuilds/discli?color=green" alt="release"></a>
+  <a href="https://github.com/ibbybuilds/discli/actions"><img src="https://img.shields.io/github/actions/workflow/status/ibbybuilds/discli/ci.yml?label=build" alt="build"></a>
+  <a href="https://twitter.com/ibbyybuilds"><img src="https://img.shields.io/badge/follow-%40ibbyybuilds-1DA1F2?logo=x&logoColor=white" alt="follow on X"></a>
+</p>
+
 <br>
 
 Create channels, manage roles, set permissions, and control your Discord servers from the terminal.
@@ -13,6 +20,10 @@ Create channels, manage roles, set permissions, and control your Discord servers
 No bot server needed. No dashboard clicking. Just commands.
 
 > Your AI agent ([AIOS Companion](https://aioscompanion.com), [OpenClaw](https://github.com/openclaw/openclaw), Claude Code, Cursor, Codex) can use discli to manage your Discord server. Create channels, assign roles, rename everything, in seconds.
+
+<p align="center">
+  <img src="assets/demo.gif" alt="discli demo - AI agent setting up a Discord server" width="100%">
+</p>
 
 <br>
 
@@ -219,6 +230,26 @@ curl -o ~/.claude/skills/discli/SKILL.md https://raw.githubusercontent.com/ibbyb
 ```
 
 > Example shown for Claude Code. Replace `~/.claude/skills/` with your agent's skill directory.
+
+### Give your bot a personality (SOUL.md)
+
+Your bot doesn't have to sound like a robot. discli supports a `SOUL.md` file that defines your bot's personality, tone, and quirks. When your agent sends messages or reacts as your bot, it reads this file first and stays in character.
+
+```bash
+# The agent will ask you about your bot's personality and generate this file
+~/.discli/SOUL.md
+```
+
+You define things like:
+- **Name and identity** -- who is your bot?
+- **Tone** -- casual lowercase? formal? chaotic?
+- **Personality traits** -- cheeky, helpful, sarcastic, wholesome?
+- **Emoji preferences** -- which ones, how often?
+- **How it talks to different people** -- owner vs community vs new members
+
+The agent creates the file after a short conversation about what you want. Every bot gets its own voice.
+
+> Inspired by [OpenClaw's SOUL.md](https://github.com/openclaw/openclaw) system.
 
 ### Example: agent sets up an entire server
 

@@ -98,9 +98,28 @@ discli audit types                       # List action type names
 - `3` — not found
 - `4` — permission denied
 
+## Bot Personality (SOUL.md)
+
+When sending messages, reacting, or interacting as the bot, check for a `SOUL.md` file at `~/.discli/SOUL.md`. If it exists, read it first and stay in character for all bot interactions (messages, replies, reactions, embeds).
+
+If no SOUL.md exists yet, ask your human how they want their bot to sound:
+- What's the bot's name?
+- What personality? (cheeky, professional, friendly, chaotic, minimal, etc.)
+- How should it talk? (casual lowercase, formal, emoji-heavy, dry wit, etc.)
+- Any specific traits or quirks?
+
+Then generate a SOUL.md and save it to `~/.discli/SOUL.md`. Use this structure:
+- **Core Truths**: behavioral principles (how the bot acts)
+- **Boundaries**: hard limits (what it won't do)
+- **Vibe**: tone, humor style, emoji preferences, example responses
+- **Identity**: name, what it is, who made it
+
+The bot should feel like a character, not a command runner.
+
 ## Notes
 
 - Channel/role/member names are resolved case-insensitively.
 - You can use IDs instead of names to avoid ambiguity.
 - Rate limits: Discord allows ~5 requests/second. Channel renames have a 10-min cooldown per channel.
 - Config stored in `~/.discli/` (token in `.env`, defaults in `config.json`).
+- Bot personality stored in `~/.discli/SOUL.md` (optional, see above).
