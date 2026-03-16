@@ -2,7 +2,9 @@
 name: discli
 description: |
   Discord server management CLI. Use when you need to manage Discord servers —
-  create channels, assign roles, manage members, rename channels, set permissions.
+  channels, roles, permissions, messages, embeds, file uploads, emojis, invites,
+  audit logs, server settings. Send images, bulk delete, search messages, clone
+  channels, upload custom emojis, change server icons. One command = one API call.
   Run discli --help or discli <command> --help to discover subcommands.
 ---
 
