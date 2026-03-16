@@ -11,6 +11,10 @@ function parseColor(color: string): number {
   return parseInt(color.replace('#', ''), 16);
 }
 
+function unescape(text: string): string {
+  return text.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+}
+
 export function registerMessage(program: Command): void {
   const message = program
     .command('message')
@@ -36,7 +40,7 @@ export function registerMessage(program: Command): void {
       }
 
       const payload: MessagePayload = {};
-      if (text) payload.content = text;
+      if (text) payload.content = unescape(text);
       if (opts.reply) {
         payload.message_reference = { message_id: opts.reply };
       }
@@ -88,8 +92,8 @@ export function registerMessage(program: Command): void {
       const embed: Embed = {};
       const localFiles: string[] = [];
 
-      if (opts.title) embed.title = opts.title;
-      if (opts.description) embed.description = opts.description;
+      if (opts.title) embed.title = unescape(opts.title);
+      if (opts.description) embed.description = unescape(opts.description);
       if (opts.color) embed.color = parseColor(opts.color);
       if (opts.url) embed.url = opts.url;
       if (opts.image) {
@@ -110,14 +114,14 @@ export function registerMessage(program: Command): void {
           embed.thumbnail = { url: opts.thumbnail };
         }
       }
-      if (opts.footer) embed.footer = { text: opts.footer };
-      if (opts.author) embed.author = { name: opts.author };
+      if (opts.footer) embed.footer = { text: unescape(opts.footer) };
+      if (opts.author) embed.author = { name: unescape(opts.author) };
       if (opts.field) {
         embed.fields = (opts.field as string[]).map((f: string) => {
           const parts = f.split('|');
           return {
-            name: parts[0],
-            value: parts[1] || '',
+            name: unescape(parts[0]),
+            value: unescape(parts[1] || ''),
             inline: parts[2] === 'inline',
           };
         });
@@ -129,7 +133,7 @@ export function registerMessage(program: Command): void {
       }
 
       const payload: MessagePayload = { embeds: [embed] };
-      if (opts.content) payload.content = opts.content;
+      if (opts.content) payload.content = unescape(opts.content);
       if (opts.reply) payload.message_reference = { message_id: opts.reply };
 
       let msg;
@@ -197,7 +201,7 @@ export function registerMessage(program: Command): void {
       const guildId = requireServer(program.opts().server);
       const ch = await resolveChannel(api, guildId, channelName);
 
-      const msg = await api.editMessage(ch.id, messageId, { content: text });
+      const msg = await api.editMessage(ch.id, messageId, { content: unescape(text) });
       if (fmt !== 'table') {
         printResult(msg, fmt);
       } else {
