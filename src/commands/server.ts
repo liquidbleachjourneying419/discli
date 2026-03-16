@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'fs';
+import { resolve } from 'path';
 import { Command } from 'commander';
 import { DiscordAPI } from '../utils/api.js';
 import { requireToken, requireServer, setDefaultServer } from '../utils/config.js';
@@ -156,6 +158,33 @@ export function registerServer(program: Command): void {
         for (const [key, value] of Object.entries(data)) {
           console.log(`  ${key}: ${value}`);
         }
+      }
+    });
+
+  server
+    .command('icon')
+    .description('Change server icon')
+    .argument('<file>', 'Image file path (png, jpg, gif)')
+    .action(async (file: string) => {
+      const fmt = resolveFormat(program.opts().format);
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+
+      const filePath = resolve(file);
+      if (!existsSync(filePath)) {
+        console.error(`File not found: ${filePath}`);
+        process.exit(1);
+      }
+
+      const data = readFileSync(filePath);
+      const ext = filePath.toLowerCase().endsWith('.gif') ? 'gif' : filePath.toLowerCase().endsWith('.png') ? 'png' : 'jpeg';
+      const base64 = `data:image/${ext};base64,${data.toString('base64')}`;
+
+      const guild = await api.modifyGuild(guildId, { icon: base64 });
+      if (fmt !== 'table') {
+        printResult({ id: guild.id, name: guild.name, icon: guild.icon }, fmt);
+      } else {
+        console.log(`Updated server icon for ${guild.name}`);
       }
     });
 }

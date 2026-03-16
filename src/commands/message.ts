@@ -226,6 +226,79 @@ export function registerMessage(program: Command): void {
     });
 
   message
+    .command('bulk-delete')
+    .description('Delete multiple recent messages')
+    .argument('<channel>', 'Channel name or ID')
+    .option('-n <count>', 'Number of messages to delete', '10')
+    .option('--confirm', 'Required to actually delete')
+    .action(async (channelName: string, opts) => {
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const ch = await resolveChannel(api, guildId, channelName);
+      const count = parseInt(opts.n);
+
+      if (!opts.confirm) {
+        console.error(`This will delete ${count} messages from #${ch.name}. Add --confirm to proceed.`);
+        process.exit(2);
+      }
+
+      const messages = await api.getMessages(ch.id, count);
+      if (messages.length === 0) {
+        console.log('No messages to delete.');
+        return;
+      }
+
+      const ids = messages.map((m) => m.id);
+
+      if (ids.length === 1) {
+        await api.deleteMessage(ch.id, ids[0]);
+      } else {
+        await api.bulkDeleteMessages(ch.id, ids);
+      }
+
+      console.log(`Deleted ${ids.length} message(s) from #${ch.name}`);
+    });
+
+  message
+    .command('search')
+    .description('Search messages in a channel by keyword')
+    .argument('<channel>', 'Channel name or ID')
+    .argument('<keyword>', 'Keyword to search for')
+    .option('-n <count>', 'Max messages to scan', '100')
+    .action(async (channelName: string, keyword: string, opts) => {
+      const fmt = resolveFormat(program.opts().format);
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const ch = await resolveChannel(api, guildId, channelName);
+
+      const limit = parseInt(opts.n);
+      const messages = await api.getMessages(ch.id, Math.min(limit, 100));
+      const matches = messages.filter((m) =>
+        m.content.toLowerCase().includes(keyword.toLowerCase())
+      );
+
+      if (fmt !== 'table') {
+        printResult(matches, fmt);
+        return;
+      }
+
+      if (matches.length === 0) {
+        console.log(`No messages matching "${keyword}" in #${ch.name}`);
+        return;
+      }
+
+      console.log(`\n#${ch.name} — ${matches.length} match(es) for "${keyword}"`);
+      console.log('─'.repeat(40));
+      for (const msg of matches) {
+        const time = new Date(msg.timestamp).toLocaleString();
+        console.log(`  ${msg.author.username} — ${time}`);
+        console.log(`    ${msg.content}`);
+        console.log(`    ID: ${msg.id}`);
+        console.log();
+      }
+    });
+
+  message
     .command('react')
     .description('Add a reaction to a message')
     .argument('<channel>', 'Channel name or ID')

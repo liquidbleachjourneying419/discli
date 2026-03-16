@@ -160,8 +160,11 @@ discli perm list                                       # List permission names
 ```bash
 discli msg send <channel> "Hello world"                # Send message
 discli msg send <channel> "reply" --reply <msg-id>     # Reply to message
+discli msg send <channel> "check this" --file ./img.png              # Send with file
+discli msg send <channel> --file ./a.png --file ./b.pdf              # Multiple files
 discli msg embed <channel> --title "X" --description "Y" --color "#5865F2"  # Rich embed
 discli msg embed <channel> --title "X" --field "Name|Value|inline"          # Embed with fields
+discli msg embed <channel> --title "X" --image ./screenshot.png      # Embed with local image
 discli msg read <channel> -n 10                        # Read last N messages
 discli msg edit <channel> <msg-id> "new text"          # Edit bot message
 discli msg delete <channel> <msg-id> --confirm         # Delete message

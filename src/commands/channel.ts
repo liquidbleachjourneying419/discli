@@ -193,4 +193,53 @@ export function registerChannel(program: Command): void {
         console.log(`Moved #${ch.name}${opts.category ? ` → ${opts.category}` : ''}${opts.position !== undefined ? ` (position ${opts.position})` : ''}`);
       }
     });
+
+  channel
+    .command('clone')
+    .description('Clone a channel with same settings')
+    .argument('<channel>', 'Channel name or ID')
+    .option('--name <name>', 'Name for the clone (default: same name)')
+    .action(async (channelName: string, opts) => {
+      const fmt = resolveFormat(program.opts().format);
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const ch = await resolveChannel(api, guildId, channelName);
+
+      const cloned = await api.createChannel(guildId, {
+        name: opts.name || ch.name,
+        type: ch.type,
+        parent_id: ch.parent_id ?? undefined,
+        topic: ch.topic ?? undefined,
+      });
+
+      if (fmt !== 'table') {
+        printResult(cloned, fmt);
+      } else {
+        console.log(`Cloned #${ch.name} → #${cloned.name} (${cloned.id})`);
+      }
+    });
+
+  channel
+    .command('slowmode')
+    .description('Set slowmode delay (seconds, 0 to disable)')
+    .argument('<channel>', 'Channel name or ID')
+    .argument('<seconds>', 'Slowmode delay in seconds (0 to disable)')
+    .action(async (channelName: string, seconds: string) => {
+      const fmt = resolveFormat(program.opts().format);
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const ch = await resolveChannel(api, guildId, channelName);
+
+      const delay = parseInt(seconds);
+      const updated = await api.modifyChannel(ch.id, { rate_limit_per_user: delay });
+      if (fmt !== 'table') {
+        printResult(updated, fmt);
+      } else {
+        if (delay === 0) {
+          console.log(`Disabled slowmode for #${ch.name}`);
+        } else {
+          console.log(`Set slowmode for #${ch.name} to ${delay}s`);
+        }
+      }
+    });
 }

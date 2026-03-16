@@ -64,7 +64,10 @@ discli perm list                      # List available permission names
 
 discli msg send <channel> "text"      # Send message
 discli msg send <ch> "text" --reply <id>  # Reply to message
+discli msg send <ch> "text" --file ./img.png  # Send with file attachment
+discli msg send <ch> --file ./a.png --file ./b.pdf  # Multiple files
 discli msg embed <ch> --title "X" --description "Y" --color "#hex"  # Rich embed
+discli msg embed <ch> --title "X" --image ./local.png  # Embed with local image
 discli msg embed <ch> --title "X" --field "Name|Value|inline"       # Embed with fields
 discli msg read <channel> -n 10       # Read last N messages
 discli msg edit <ch> <msg-id> "new"   # Edit bot message

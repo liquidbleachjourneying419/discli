@@ -96,6 +96,51 @@ export function registerRole(program: Command): void {
     });
 
   role
+    .command('edit')
+    .description('Edit an existing role')
+    .argument('<name>', 'Role name or ID')
+    .option('--name <newName>', 'New role name')
+    .option('--color <hex>', 'New color hex (e.g. #ff5733)')
+    .option('--permissions <perms>', 'Comma-separated permissions')
+    .option('--mentionable', 'Allow anyone to mention this role')
+    .option('--no-mentionable', 'Disallow mentioning this role')
+    .option('--hoist', 'Show role separately in member list')
+    .option('--no-hoist', 'Do not show separately')
+    .option('--dry-run', 'Show what would be changed')
+    .action(async (name: string, opts) => {
+      const fmt = resolveFormat(program.opts().format);
+      const api = new DiscordAPI(requireToken());
+      const guildId = requireServer(program.opts().server);
+      const r = await resolveRole(api, guildId, name);
+
+      const data: Record<string, unknown> = {};
+      if (opts.name) data.name = opts.name;
+      if (opts.color) data.color = parseInt(opts.color.replace('#', ''), 16);
+      if (opts.permissions) data.permissions = parsePermissions(opts.permissions).toString();
+      if (opts.mentionable === true) data.mentionable = true;
+      if (opts.mentionable === false) data.mentionable = false;
+      if (opts.hoist === true) data.hoist = true;
+      if (opts.hoist === false) data.hoist = false;
+
+      if (Object.keys(data).length === 0) {
+        console.error('Provide at least one option to change (--name, --color, --permissions, --hoist, --mentionable).');
+        process.exit(2);
+      }
+
+      if (opts.dryRun) {
+        printResult({ action: 'edit_role', role: r.name, changes: data }, fmt);
+        return;
+      }
+
+      const updated = await api.modifyRole(guildId, r.id, data);
+      if (fmt !== 'table') {
+        printResult(updated, fmt);
+      } else {
+        console.log(`Updated role @${updated.name} (${updated.id})`);
+      }
+    });
+
+  role
     .command('delete')
     .description('Delete a role')
     .argument('<name>', 'Role name or ID')

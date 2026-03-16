@@ -9,6 +9,7 @@ import { registerPermission } from './commands/permission.js';
 import { registerMessage } from './commands/message.js';
 import { registerAudit } from './commands/audit.js';
 import { registerInvite } from './commands/invite.js';
+import { registerEmoji } from './commands/emoji.js';
 
 const require = createRequire(import.meta.url);
 const { version } = require('../package.json');
@@ -31,5 +32,6 @@ registerPermission(program);
 registerMessage(program);
 registerAudit(program);
 registerInvite(program);
+registerEmoji(program);
 
 program.parse();

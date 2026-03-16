@@ -258,6 +258,10 @@ export class DiscordAPI {
     await this.request('DELETE', `/channels/${channelId}/messages/${messageId}`);
   }
 
+  async bulkDeleteMessages(channelId: string, messageIds: string[]): Promise<void> {
+    await this.request('POST', `/channels/${channelId}/messages/bulk-delete`, { messages: messageIds });
+  }
+
   async pinMessage(channelId: string, messageId: string): Promise<void> {
     await this.request('PUT', `/channels/${channelId}/pins/${messageId}`);
   }
@@ -344,6 +348,23 @@ export class DiscordAPI {
 
   async modifyMember(guildId: string, userId: string, data: Record<string, unknown>): Promise<Member> {
     return (await this.request('PATCH', `/guilds/${guildId}/members/${userId}`, data)) as Member;
+  }
+
+  // ── Emoji ──
+
+  async listEmojis(guildId: string): Promise<Emoji[]> {
+    return (await this.request('GET', `/guilds/${guildId}/emojis`)) as Emoji[];
+  }
+
+  async createEmoji(guildId: string, name: string, imagePath: string): Promise<Emoji> {
+    const data = readFileSync(imagePath);
+    const ext = imagePath.toLowerCase().endsWith('.gif') ? 'gif' : 'png';
+    const base64 = `data:image/${ext};base64,${data.toString('base64')}`;
+    return (await this.request('POST', `/guilds/${guildId}/emojis`, { name, image: base64 })) as Emoji;
+  }
+
+  async deleteEmoji(guildId: string, emojiId: string): Promise<void> {
+    await this.request('DELETE', `/guilds/${guildId}/emojis/${emojiId}`);
   }
 }
 
@@ -435,6 +456,14 @@ export interface Message {
     bot?: boolean;
   };
   embeds?: Embed[];
+}
+
+export interface Emoji {
+  id: string;
+  name: string;
+  animated?: boolean;
+  available?: boolean;
+  managed?: boolean;
 }
 
 export interface Invite {
